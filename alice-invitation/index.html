@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5eee4">
+  <meta name="description" content="You're invited to A Children's Story Cooking Party with First Church Young Adults, Saturday, November 7.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A Children's Story Cooking Party">
+  <meta property="og:description" content="First Church Young Adults · Saturday, November 7 · You're invited!">
+  <meta property="og:image" content="front.png">
+  <title>A Children's Story Cooking Party · First Church Young Adults</title>
+  <style>
+    :root { color-scheme: light; --paper:#f5eee4; --ink:#322a25; --red:#8b3029; }
+    * { box-sizing:border-box; }
+    html,body { min-height:100%; margin:0; }
+    body { background: radial-gradient(ellipse at 50% 30%, #fffaf2, #e9ddcd 95%); color:var(--ink); font-family:Georgia,serif; }
+    main { min-height:100svh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:24px 12px 16px; gap:14px; overflow:hidden; }
+    .book { width:min(528px, calc((100svh - 110px) * 0.6875), calc(100vw - 30px)); aspect-ratio: 528 / 768; position:relative; perspective:1800px; filter:drop-shadow(0 12px 18px #51423335); }
+    .inside, .cover { position:absolute; inset:0; width:100%; height:100%; }
+    .inside { z-index:1; background:var(--paper); }
+    .inside img, .cover img { width:100%; height:100%; display:block; }
+    .cover { z-index:2; transform-origin:0 50%; transform-style:preserve-3d; transition:transform 1.35s cubic-bezier(.22,.7,.18,1), filter 1.35s; backface-visibility:hidden; }
+    .cover::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 8px 0 14px #34271912; }
+    .book.open .cover { transform:rotateY(-165deg); filter:brightness(.88); pointer-events:none; }
+    .open-hotspot { position:absolute; z-index:3; left:34%; top:86%; width:32%; height:8%; border:0; border-radius:5px; background:transparent; cursor:pointer; }
+    .open-hotspot:focus-visible { outline:3px solid var(--red); outline-offset:3px; }
+    .actions { display:flex; gap:14px; align-items:center; min-height:34px; }
+    .actions button { background:transparent; border:1px solid #806b60; border-radius:5px; padding:8px 16px; font:small-caps 15px Georgia,serif; letter-spacing:.08em; color:var(--ink); cursor:pointer; }
+    .actions button:hover { background:#fff8ee; }
+    .hint { font-style:italic; font-size:13px; color:#68594f; text-align:center; }
+    [hidden] { display:none !important; }
+    @media (prefers-reduced-motion:reduce) { .cover { transition:none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="book" id="book" aria-label="Interactive invitation card">
+      <div class="inside"><img src="inside.png" alt="Inside invitation: Saturday, November 7, six o'clock until half past nine, at Casey's House. Bring a dish inspired by a classic children's story. Please RSVP to the organizer. The printed invitation contains placeholders for the address and RSVP details."></div>
+      <div class="cover" id="cover">
+        <img src="front.png" alt="First Church Young Adults: A Children's Story Cooking Party. Alice in Wonderland tea party illustration. Open Me.">
+        <button class="open-hotspot" id="open" type="button" aria-label="Open the invitation"></button>
+      </div>
+    </div>
+    <div class="actions"><button id="close" type="button" hidden>↶ Close invitation</button></div>
+    <div class="hint" id="hint">Click “Open Me” to turn the cover.</div>
+  </main>
+  <script>
+    const book = document.getElementById('book');
+    const openButton = document.getElementById('open');
+    const closeButton = document.getElementById('close');
+    const hint = document.getElementById('hint');
+    function setOpen(open) {
+      book.classList.toggle('open', open);
+      closeButton.hidden = !open;
+      openButton.disabled = open;
+      hint.textContent = open ? 'We hope to see you there!' : 'Click “Open Me” to turn the cover.';
+      if (open) closeButton.focus({preventScroll:true});
+      else openButton.focus({preventScroll:true});
+    }
+    openButton.addEventListener('click', () => setOpen(true));
+    closeButton.addEventListener('click', () => setOpen(false));
+  </script>
+</body>
+</html>
